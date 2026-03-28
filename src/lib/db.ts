@@ -6,28 +6,14 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Helper para ler as variaveis de ambiente no Cloudflare
-function getEnv(key: string) {
-  if (typeof process !== 'undefined' && process.env && process.env[key]) {
-    return process.env[key]
-  }
-  // Fallback caso globalThis.process não exista no Worker
-  // @ts-ignore
-  if (typeof globalThis !== 'undefined' && globalThis[key]) {
-     // @ts-ignore
-    return globalThis[key]
-  }
-  return ''
-}
-
 function createPrismaClient() {
-  const databaseUrl = getEnv('DATABASE_URL')
-  const authToken = getEnv('TURSO_AUTH_TOKEN')
+  const url = process.env.DATABASE_URL
+  const authToken = process.env.TURSO_AUTH_TOKEN
 
   // Usa o adaptador do Turso para Cloudflare Edge / Produção
-  if (databaseUrl?.startsWith('libsql://') || databaseUrl?.startsWith('https://')) {
+  if (url?.startsWith('libsql://') || url?.startsWith('https://')) {
     const libsql = createClient({
-      url: databaseUrl,
+      url: url,
       authToken: authToken,
     })
     const adapter = new PrismaLibSQL(libsql)
@@ -36,10 +22,18 @@ function createPrismaClient() {
 
   // Fallback genérico para local
   return new PrismaClient({
-    log: getEnv('NODE_ENV') === 'development' ? ['query'] : [],
+    log: process.env.NODE_ENV === 'development' ? ['query'] : [],
   })
 }
 
-export const db = globalForPrisma.prisma ?? createPrismaClient()
-
-if (getEnv('NODE_ENV') !== 'production') globalForPrisma.prisma = db
+// O "Pulo do Gato": Proxy para "atrasar" a inicialização do Prisma.
+// Isso garante que o process.env só seja lido DENTRO da requisição do Cloudflare.
+export const db = new Proxy({} as PrismaClient, {
+  get(_, prop) {
+    if (!globalForPrisma.prisma) {
+      globalForPrisma.prisma = createPrismaClient()
+    }
+    const value = (globalForPrisma.prisma as any)[prop]
+    return typeof value === 'function' ? value.bind(globalForPrisma.prisma) : value
+  }
+})
