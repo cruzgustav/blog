@@ -1,0 +1,22 @@
+# ========================================
+# VORTEK BLOG - Cloudflare Pages Config
+# ========================================
+
+name = "vortek-blog"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Pages project
+pages_build_output_dir = ".vercel/output/static"
+
+# D1 Database (SQLite do Cloudflare)
+# Descomente após criar o banco no dashboard do Cloudflare
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "vortek-db"
+# database_id = "seu-database-id-aqui"
+
+# Variáveis de ambiente
+# Configure no dashboard do Cloudflare Pages
+[vars]
+ENVIRONMENT = "production"
