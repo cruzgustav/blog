@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000 2>&1 | tee dev.log",
-    "build": "next build",
-    "build:cf": "next-on-pages",
+    "build": "npx prisma generate && next build",
+    "build:cf": "npx prisma generate && next-on-pages",
     "start": "next start",
     "lint": "eslint .",
     "db:push": "prisma db push",
