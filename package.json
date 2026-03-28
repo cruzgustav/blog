@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3000 2>&1 | tee dev.log",
     "build": "next build",
-    "build:cf": "DATABASE_URL=\"libsql://vortek-blog-cruzgustav.aws-us-east-1.turso.io\" TURSO_AUTH_TOKEN=\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJnaWQiOiJhOTk1OWQxOS1kYmMxLTQzZmEtODUxZi02YzE1NDQ0YmJhNWEiLCJpYXQiOjE3NzQ2NzU4NTEsInJpZCI6IjFkNTNmOWFiLTVjZDItNDQ3NS04YTkxLWFlMDM2YjBmYmI3ZiJ9.C-AFn6I0yo-gl6DiOKSiFtxCLvkso0A_88VZvS5NpAgsceW7zNpTjjxxhUVv8GSJ4i1X5XNwI5tT1-wqTka9CA\" next-on-pages"
+    "build:cf": "DATABASE_URL=\"libsql://vortek-blog-cruzgustav.aws-us-east-1.turso.io\" TURSO_AUTH_TOKEN=\"eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJnaWQiOiJhOTk1OWQxOS1kYmMxLTQzZmEtODUxZi02YzE1NDQ0YmJhNWEiLCJpYXQiOjE3NzQ2NzU4NTEsInJpZCI6IjFkNTNmOWFiLTVjZDItNDQ3NS04YTkxLWFlMDM2YjBmYmI3ZiJ9.C-AFn6I0yo-gl6DiOKSiFtxCLvkso0A_88VZvS5NpAgsceW7zNpTjjxxhUVv8GSJ4i1X5XNwI5tT1-wqTka9CA\" next-on-pages",
     "start": "next start",
     "lint": "eslint .",
     "db:push": "prisma db push",
