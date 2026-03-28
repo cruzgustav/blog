@@ -1,3 +1,6 @@
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 import { db } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import { ArticlePageClient } from './article-client'
