@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaLibSql } from '@prisma/adapter-libsql'
-import { createClient } from '@libsql/client'
+import { PrismaLibSQL } from '@prisma/adapter-libsql'
+import { createClient } from '@libsql/client/web'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
@@ -9,13 +9,13 @@ const globalForPrisma = globalThis as unknown as {
 function createPrismaClient() {
   const databaseUrl = process.env.DATABASE_URL
 
-  // Se for URL do Turso/LibSQL, usar adapter
+  // Se for URL do Turso/LibSQL, usar adapter (Cloudflare Edge / Produção)
   if (databaseUrl?.startsWith('libsql://') || databaseUrl?.startsWith('https://')) {
     const libsql = createClient({
       url: databaseUrl,
       authToken: process.env.TURSO_AUTH_TOKEN,
     })
-    const adapter = new PrismaLibSql(libsql)
+    const adapter = new PrismaLibSQL(libsql)
     return new PrismaClient({ adapter })
   }
 
